@@ -13,4 +13,3 @@ jobs:
       - run: python -m pip install -e '.[test,runtime,evaluation]'
       - run: pytest -q
       - run: rag-backend --help
-

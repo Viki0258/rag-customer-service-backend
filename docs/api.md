@@ -45,4 +45,3 @@
 网页同步接口通过同源 Cookie 使用 `POST /api/session`、`POST /api/chat`、`POST /api/resume`，请求头需 `X-Chat-Client: 1`。`/api/chat` 直接接收 `text` 和 `locale`，无 `request_id`，返回完整结果。它限制 `Host` 为 `localhost` 或 `127.0.0.1`；外部前端优先使用自己的服务端代理调用 Bearer 接口。
 
 `--public-demo` 不暴露 `/api/*`，避免绕过演示口令和额度；无论哪种模式均不提供 HTML、JavaScript、CSS、WXML 或 WXSS。
-

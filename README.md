@@ -81,4 +81,3 @@ git diff --check
 默认测试使用假模型和本地临时存储，不调用真实 API。`scripts/evaluate_customer_dialogue.py --live` 和 `scripts/evaluate_manual_scope.py --live` 是需主动运行的付费联调脚本，不进入默认 CI。过去的联调记录位于 `docs/evaluation/`，其日期和结果不代表新仓库已重新执行相同联调。
 
 PostgreSQL, Redis, OpenAI embedding, and OpenAI response adapters exist. In the default offline suite, live external integration is not exercised or claimed. Optional durable worker setup and integration checks are documented in [local development](docs/local-development.md); RAG configuration and safety contracts are in [RAG development](docs/rag-local-development.md).
-
