@@ -1,0 +1,5 @@
+{
+  "api_key": "REPLACE_WITH_YOUR_RESPONSE_API_KEY",
+  "base_url": "https://api.deepseek.com",
+  "response_model": "REPLACE_WITH_YOUR_ENABLED_MODEL_NAME"
+}

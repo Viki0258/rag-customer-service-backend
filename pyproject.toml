@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rag-customer-service-backend"
+version = "0.1.0"
+description = "Shared RAG customer-service backend for web and mini-program clients"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "langchain-core==1.6.4", "langsmith==0.14.0",
+    "fastapi>=0.115", "uvicorn>=0.30", "httpx>=0.27",
+    "pydantic>=2.0", "aiosqlite>=0.20",
+]
+
+[project.scripts]
+whatsapp-gateway = "whatsapp_support.__main__:gateway_main"
+whatsapp-worker = "whatsapp_support.__main__:worker_main"
+whatsapp-indexer = "whatsapp_support.__main__:indexer_main"
+whatsapp-integration-check = "whatsapp_support.__main__:integration_check_main"
+rag-backend = "whatsapp_support.backend:main"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8",
+    "aiosqlite>=0.20",
+    "fakeredis>=2.23",
+    "jsonschema>=4.17.3",
+    "pytest-asyncio>=0.24",
+    "sqlalchemy>=2.0",
+    "redis>=5.0",
+]
+runtime = [
+    "uvicorn>=0.30",
+    "aiosqlite>=0.20",
+    "fastapi>=0.115",
+    "httpx>=0.27",
+    "pydantic>=2.0",
+    "sqlalchemy>=2.0",
+    "redis>=5.0",
+    "asyncpg>=0.29",
+]
+evaluation = [
+    "pyarrow>=16",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "integration: tests that require configured external services",
+]

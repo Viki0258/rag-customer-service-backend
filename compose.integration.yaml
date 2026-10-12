@@ -1,0 +1,28 @@
+# Disposable integration services only. Never point destructive tests at production.
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: whatsapp_support_test
+      POSTGRES_USER: integration_test
+      POSTGRES_PASSWORD: local_test_only
+    ports:
+      - "127.0.0.1::5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U integration_test -d whatsapp_support_test"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+  redis:
+    image: redis:7
+    ports:
+      - "127.0.0.1::6379"
+    tmpfs:
+      - /data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 5s
+      retries: 30

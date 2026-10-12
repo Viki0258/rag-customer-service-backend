@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/whatsapp-support/rag-evaluation-schema-1.0.json",
+  "title": "WhatsApp RAG evaluation JSONL record",
+  "oneOf": [
+    { "$ref": "#/$defs/case" },
+    { "$ref": "#/$defs/result" }
+  ],
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "expected_relevant"],
+      "properties": {
+        "text": { "type": "string", "pattern": "\\S" },
+        "expected_relevant": { "type": "boolean" }
+      }
+    },
+    "sourceAnnotations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "adherence_score",
+        "all_relevant_sentence_keys",
+        "sentence_support_information",
+        "unsupported_response_sentence_keys"
+      ],
+      "properties": {
+        "adherence_score": { "type": "number" },
+        "all_relevant_sentence_keys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "\\S" }
+        },
+        "sentence_support_information": {
+          "type": "object",
+          "propertyNames": { "pattern": "\\S" },
+          "additionalProperties": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "type": "string", "pattern": "\\S" }
+          }
+        },
+        "unsupported_response_sentence_keys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "\\S" }
+        }
+      }
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_type",
+        "schema_version",
+        "case_id",
+        "locale",
+        "question",
+        "task_kind",
+        "evidence_candidates",
+        "source_dataset",
+        "synthetic"
+      ],
+      "properties": {
+        "record_type": { "const": "case" },
+        "schema_version": { "const": "1.0" },
+        "case_id": { "type": "string", "pattern": "\\S" },
+        "locale": { "enum": ["en", "zh"] },
+        "question": { "type": "string", "pattern": "\\S" },
+        "task_kind": {
+          "enum": ["retrieval_answer", "handoff", "routing_only", "prompt_injection"]
+        },
+        "evidence_candidates": {
+          "type": "object",
+          "propertyNames": { "pattern": "\\S" },
+          "additionalProperties": { "$ref": "#/$defs/evidence" }
+        },
+        "expected_intent": { "type": "string", "pattern": "\\S" },
+        "support_labels": {
+          "type": "object",
+          "propertyNames": { "pattern": "\\S" },
+          "additionalProperties": { "enum": ["supported", "unsupported"] }
+        },
+        "source_annotations": { "$ref": "#/$defs/sourceAnnotations" },
+        "source_dataset": { "type": "string", "pattern": "\\S" },
+        "synthetic": { "type": "boolean" }
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_type",
+        "schema_version",
+        "case_id",
+        "retrieved_evidence_ids",
+        "predicted_handoff"
+      ],
+      "properties": {
+        "record_type": { "const": "result" },
+        "schema_version": { "const": "1.0" },
+        "case_id": { "type": "string", "pattern": "\\S" },
+        "retrieved_evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "\\S" }
+        },
+        "predicted_handoff": { "type": "boolean" },
+        "generated_reply": { "type": "string", "pattern": "\\S" },
+        "response_locale": { "enum": ["en", "zh"] },
+        "answer_support_label": { "enum": ["supported", "unsupported"] },
+        "cited_evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "\\S" }
+        },
+        "predicted_intent": { "type": "string", "pattern": "\\S" }
+      },
+      "dependentRequired": {
+        "generated_reply": ["response_locale"],
+        "response_locale": ["generated_reply"],
+        "answer_support_label": ["generated_reply", "response_locale"]
+      }
+    }
+  }
+}

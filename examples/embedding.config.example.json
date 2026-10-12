@@ -1,0 +1,6 @@
+{
+  "api_key": "REPLACE_WITH_YOUR_EMBEDDING_API_KEY",
+  "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+  "embedding_model": "text-embedding-v4",
+  "dimensions": 1024
+}
